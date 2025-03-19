@@ -68,21 +68,9 @@ const MapComponent = ({ geojsonData }) => {
   );
 };
 
-// function export() {
-//   const element = document.createElement("a");
-//   const textFile = new Blob([JSON.stringify(selectedFeature)], {type: "text/plain"});
-//   element.href = URL.createObjectURL(textFile)
-//   element.download = "selected.json";
-//   document.body.appendChild(element);
-//   element.click()
-//   document.body.removeChild(element);
-// }
-
 function App() { 
   return (
     <div className="App">
-      <div></div>
-      
       <MapComponent geojsonData={geojsonData}></MapComponent>
     </div>
   );
