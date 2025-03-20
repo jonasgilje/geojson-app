@@ -5,6 +5,27 @@ import 'leaflet/dist/leaflet.css'
 import { useState } from 'react';
 
 
+const fylkesmapper = {
+  "56": "Finnmark",
+  "55": "Troms",
+  "18": "Nordland",
+  "50": "Trøndelag",
+  "15": "Møre og Romsdal",
+  "46": "Vestland",
+  "11": "Rogaland",
+  "40": "Telemark",
+  "42": "Agder",
+  "39": "Vestfold",
+  "03": "",//"Oslo",
+  "31": "Østfold",
+  "33": "Buskerud",
+  "32": "Akershus",
+  "34": "Innlandet"
+}
+
+const kommunemapper = Object.assign({}, ...geojsonData.features.map(feature => {return({[feature.properties.id]: feature.properties.name});}));
+
+
 const MapComponent = ({ geojsonData }) => {
   const [selectedFeature, setSelectedFeature] = useState([]);
 
@@ -56,15 +77,24 @@ const MapComponent = ({ geojsonData }) => {
   }
 
   return (
-    <MapContainer center={[63, 12]} zoom={5} style={{ height: '100vh', width: '100%' }}>
-      <GeoJSON 
-        data={geojsonData} 
-        onEachFeature={onEachFeature} 
-        style={styleFeature} 
-      />
-      <button onClick={exportFunction}>Export</button>
-      <button onClick={importFunction}>Import</button>
-    </MapContainer>
+    <div style={{display: "flex", flexDirection: "row"}}>
+      <MapContainer center={[63, 12]} zoom={5} style={{ height: '100vh', width: '70%' }}>
+        <GeoJSON 
+          data={geojsonData} 
+          onEachFeature={onEachFeature} 
+          style={styleFeature} 
+        />
+        
+      </MapContainer>
+      <div style={{ overflowY: 'scroll', height: '100vh', width: '30%', backgroundColor: '#111', color: "white" }}>
+        <button onClick={exportFunction}>Export</button>
+        <button onClick={importFunction}>Import</button>
+        <p>{selectedFeature.length} / {Object.keys(kommunemapper).length}</p>
+        <ul>
+          {selectedFeature.map(kommunenr => <li>{kommunemapper[kommunenr]}, {fylkesmapper[kommunenr.slice(0, 2)]} ({kommunenr})</li>).reverse()}
+        </ul>
+      </div>
+    </div>
   );
 };
 
